@@ -1,11 +1,34 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Button, StyleSheet, Text, View } from 'react-native';
+import { MainScreen } from './src/screens/MainScreen';
+import { ImageScreen } from './src/screens/ImageScreen';
 
 export default function App() {
+  const [cardId, setCardId] = useState(null);
+  const [cardPhoto, setCardPhoto] = useState(null);
+
+  let content = (
+    <MainScreen
+      showPhoto={(item) => (
+        setCardId(item.id),
+        setCardPhoto(item.urls.small)
+      )}
+    />
+  );
+
+  if (cardId) {
+    content = (
+      <ImageScreen
+        photoUrl={cardPhoto}
+        hidePhoto={(id) => setCardId(id)}
+      />
+    )
+  }
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      { content }
       <StatusBar style="auto" />
     </View>
   );
@@ -13,9 +36,6 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+    backgroundColor: '#ddd',
+  }
 });
